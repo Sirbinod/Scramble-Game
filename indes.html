@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Scramble Game</title>
+        <link rel="stylesheet" href="styles.css">
+        <style>
+             *{margin: 0; padding: 0; box-sizing: border-box;}
+
+             header{
+                width: 100%;
+                height: 15vh;
+                background-color: #0c812a;
+             }
+             h1{
+                 text-align: center;
+                 padding: 30px 0;
+                 color: white;
+                 font-size: 1.5rem;
+                 text-transform: uppercase ;
+                 letter-spacing: 15px;
+                 text-shadow: 2px 3px #140303;
+
+             }
+             section{
+                 height: 85vh;
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+                 background-color: rgb(2, 122, 122);
+             }
+             .areaPlay{
+                 width: 50%;
+                 height: 400px;
+                 padding: 20px 0;
+                 background-color: #0c4e28;
+                 display: flex;
+                 flex-direction: column;
+                 justify-content: center;
+                 align-items: center;
+                 box-shadow: 0 8px 6px -6px black;
+             }
+             h3{
+                 text-align: center;
+                 font-size: 1.5rem;
+
+             }
+             input{
+                 width: 40%;
+                 padding: 15px 0;
+                 text-align: center;
+                 border-radius: 25px;
+                 outline: none;
+                 border: none;
+                 background-color: #dff9fb;
+                 color: black;
+                 margin: 2rem;
+                 font-size: 1.1rem;
+             }
+             button{
+                 font-size: 1rem;
+                 cursor: pointer;
+                 outline: nome;
+                 border: #2f3542;
+                 text-decoration: none;
+                 margin-top: 10px;
+                 color: #eb4d4b;
+             }
+             button.button{
+                 font-weight: 600;
+                 padding: 1rem 2rem;
+                 background: white;
+                 text-transform: uppercase;
+                 transition-property: all;
+                 transition-duration: 0.5s;
+                 transition-timing-function: cubic-bezier(0.65,-0.25,025,1.95);
+             }
+             button.button:hover, button.button:focus, button.button:active{
+                 letter-spacing:0.125rem;
+                 word-spacing: 0.2rem;
+             }
+             .hidden{
+                 display: none;
+             }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Guess the word</h1>
+        </header>
+        <section>
+            <div class="areaPlay">
+                <h3 class ="message"> </h3>
+                <input type="text" class="hidden">
+                <button class="button">Click Here</button>
+            </div>
+        </section>
+        <script>
+              
+        const message = document.querySelector('.message');
+        const guess = document.querySelector('input');
+        const button = document.querySelector('.button');
+        let play = false;
+        let newWords = "";
+        let randomWords = "";
+        let words = [
+        "Aardvark", "Albatross", "Alligator", "Alpaca", "Ant", "Anteater", "Antelope", "Ape", "Armadillo",
+        "Baboon", "Badger", "Barracuda", "Bat", "Bear", "Beaver", "Bee", "Bison", "Boar", "Buffalo", "Butterfly",
+        "Cat", "Caterpillar", "Cattle", "Chamois", "Cheetah", "Chicken", "Cockroach", "Cormorant", "Coyote", "Crab", "Crane", "Crocodile", "Crow", 
+        "Donkey"
+        ];
+
+        const createWord = () =>{
+            let randomNum = Math.floor(Math.random() * words.length);
+            let tempWords = words[randomNum];
+            // console.log(tempWords.split(""));
+            return tempWords;
+        }
+
+        const scrambleWorld =(arr) =>{
+            for (let i = arr.length-1; i>=0; i--){
+                let temp = arr[i];
+                // console.log(temp); 
+                let ranIndex = Math.floor(Math.random() * (i+1));
+                // console.log(i);
+                // console.log(ranIndex);
+                arr[i] = arr[ranIndex];
+                arr[ranIndex] = temp;
+            }
+            return arr; 
+
+        }
+        
+     
+
+        button.addEventListener('click', function(){
+            if(!play){
+                play = true;
+                button.innerHTML = "Guess";
+                guess.classList.toggle('hidden');
+                newWords = createWord();
+                randomWords = scrambleWorld(newWords.split("")).join("");
+                message.innerHTML = `Guess the Word: ${randomWords}`;
+            }else{
+                let tempWord = guess.value;
+                if(tempWord === newWords){
+                    play = false;
+                    message.innerHTML = `Awesome It's Coreect. It is ${newWords}`;
+                    button.innerHTML = 'Start Again';
+                    guess.classList.toggle('hidden');
+                    guess.value = "";
+                }else{
+                    message.innerHTML = `Sorry! It's not Correct. plz try again:  ${randomWords}`;
+                     
+                }
+            }
+        })           
+        </script>
+    </body>
+</html>
